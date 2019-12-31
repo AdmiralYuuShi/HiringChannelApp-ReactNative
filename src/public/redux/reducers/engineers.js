@@ -30,16 +30,55 @@ const engineers = (state = initialState, action) => {
       };
     case 'UPDATE_ENGINEERS_PENDING':
       return {
+        ...state,
         isError: false,
         isLoading: true,
       };
     case 'UPDATE_ENGINEERS_FULFILLED':
       return {
+        ...state,
         isError: false,
         isLoading: false,
       };
     case 'UPDATE_ENGINEERS_REJECTED':
       return {
+        ...state,
+        isError: true,
+        isLoading: false,
+      };
+    case 'CREATE_ENGINEERS_PENDING':
+      return {
+        ...state,
+        isError: false,
+        isLoading: true,
+      };
+    case 'CREATE_ENGINEERS_FULFILLED':
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+      };
+    case 'CREATE_ENGINEERS_REJECTED':
+      return {
+        ...state,
+        isError: true,
+        isLoading: false,
+      };
+    case 'DELETE_ENGINEERS_PENDING':
+      return {
+        ...state,
+        isError: false,
+        isLoading: true,
+      };
+    case 'DELETE_ENGINEERS_FULFILLED':
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+      };
+    case 'DELETE_ENGINEERS_REJECTED':
+      return {
+        ...state,
         isError: true,
         isLoading: false,
       };

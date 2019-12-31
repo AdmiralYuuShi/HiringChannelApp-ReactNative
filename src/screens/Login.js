@@ -81,7 +81,7 @@ class Login extends Component {
               </Item>
               <Item floatingLabel last>
                 <Label>Password</Label>
-                <Input onChangeText={e => this.setState({password: e})} />
+                <Input secureTextEntry onChangeText={e => this.setState({password: e})} />
               </Item>
               <Header transparent>
                 <Body>

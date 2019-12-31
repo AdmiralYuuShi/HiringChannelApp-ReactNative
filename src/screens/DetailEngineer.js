@@ -50,7 +50,7 @@ const DetailEngineer = props => {
           onEditPress={() => console.warn('Edit!')}
           activeOpacity={0.7}
           source={{
-            uri: API_URL + '/images/' + profil_picture,
+            uri: `${API_URL}/images/${profil_picture}`,
           }}
           showEditButton
         />

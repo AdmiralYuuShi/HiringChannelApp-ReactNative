@@ -22,6 +22,8 @@ import MyProfile from './src/screens/MyProfile';
 import Engineers from './src/screens/Engineers';
 import Companies from './src/screens/Companies';
 import DetailEngineer from './src/screens/DetailEngineer';
+import EditEngineer from './src/screens/EditEngineer';
+import CreateEngineerProfile from './src/screens/CreateEngineerProfile';
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
@@ -111,6 +113,12 @@ const StackNavigator = createStackNavigator({
   },
   detail: {
     screen: DetailEngineer,
+  },
+  editEngineer: {
+    screen: EditEngineer,
+  },
+  createEngineerProfile: {
+    screen: CreateEngineerProfile,
   },
 });
 
