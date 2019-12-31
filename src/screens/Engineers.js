@@ -1,4 +1,5 @@
 import React from 'react';
+import {API_URL} from 'react-native-dotenv';
 import {
   Container,
   Header,
@@ -79,7 +80,8 @@ class Engineers extends React.Component {
     limit = 5,
   ) => {
     const api =
-      'http://54.161.68.237:8080/api/v1/engineer?search=' +
+      API_URL +
+      '/api/v1/engineer?search=' +
       search +
       '&page=1&sortBy=' +
       sortBy +
@@ -199,11 +201,15 @@ class Engineers extends React.Component {
                 searchBar
                 rounded
                 noShadow
-                style={{backgroundColor: '#188C81'}}>
+                style={{backgroundColor: '#4267B2'}}>
                 <Item>
                   <Icon name="ios-search" />
                   <Input placeholder="Search" onChangeText={this.search} />
-                  <Icon name="ios-person" />
+                  <FontAwesome5
+                    name="times"
+                    size={20}
+                    style={{marginRight: 10}}
+                  />
                 </Item>
                 <Button transparent>
                   <Text>Search</Text>

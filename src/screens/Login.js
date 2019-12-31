@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {API_URL} from 'react-native-dotenv';
 import {Image} from 'react-native';
 import {connect} from 'react-redux';
 import {
@@ -36,7 +37,7 @@ class Login extends Component {
   }
 
   handleLogin = _ => {
-    const api = 'http://54.161.68.237:8080/api/v1/user/login';
+    const api = `${API_URL}/api/v1/user/login`;
     const data = {
       username: this.state.username,
       password: this.state.password,
@@ -105,13 +106,30 @@ class Login extends Component {
           <Text>Register</Text>
         </Overlay>
         <Container>
-          <Content style={{padding: 30, paddingTop: 400}}>
+          <Content style={{padding: 30, paddingTop: 350}}>
             <Card>
+              {this.props.auth.isLogin && (
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('tab')}>
+                  <CardItem>
+                    <Icon active name="logo-googleplus" />
+                    <Text>Login as {this.props.auth.username}</Text>
+                    <Right>
+                      <Icon name="arrow-forward" />
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
+              )}
+              <Divider />
               <TouchableOpacity
                 onPress={() => this.setState({loginOverlay: true})}>
                 <CardItem>
                   <Icon active name="logo-googleplus" />
-                  <Text>Login</Text>
+                  {this.props.auth.isLogin ? (
+                    <Text>Change Account</Text>
+                  ) : (
+                    <Text>Login</Text>
+                  )}
                   <Right>
                     <Icon name="arrow-forward" />
                   </Right>
@@ -149,6 +167,7 @@ class Login extends Component {
 
 const mapStateToProps = state => ({
   engineers: state.engineers,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({

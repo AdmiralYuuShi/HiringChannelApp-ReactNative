@@ -1,4 +1,5 @@
 import React from 'react';
+import {API_URL} from 'react-native-dotenv';
 import {View} from 'react-native';
 import {Avatar, Tile, Text, Divider, Badge, Icon} from 'react-native-elements';
 import {
@@ -49,7 +50,7 @@ const DetailEngineer = props => {
           onEditPress={() => console.warn('Edit!')}
           activeOpacity={0.7}
           source={{
-            uri: 'http://54.161.68.237:8080/images/' + profil_picture,
+            uri: API_URL + '/images/' + profil_picture,
           }}
           showEditButton
         />

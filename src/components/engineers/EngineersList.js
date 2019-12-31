@@ -1,4 +1,5 @@
 import React from 'react';
+import {API_URL} from 'react-native-dotenv';
 import {withNavigation} from 'react-navigation';
 import {View, Text, StyleSheet} from 'react-native';
 import {
@@ -14,7 +15,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {connect} from 'react-redux';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {fetchEngineers} from '../../public/redux/actions/engineers';
-import {TouchableHighlight, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const EngineersList = props => {
   const config = {
@@ -55,9 +56,7 @@ const EngineersList = props => {
                     <Left>
                       <Thumbnail
                         source={{
-                          uri:
-                            'http://54.161.68.237:8080/images/' +
-                            engineers.profil_picture,
+                          uri: API_URL + '/images/' + engineers.profil_picture,
                         }}
                       />
                       <Body>
