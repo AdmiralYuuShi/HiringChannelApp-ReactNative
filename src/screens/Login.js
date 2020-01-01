@@ -21,9 +21,11 @@ import {
   Body,
   Title,
 } from 'native-base';
+import {CheckBox} from 'react-native-elements';
 import {Overlay, Divider} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {fetchUser, logout} from '../public/redux/actions/user';
+import {fetchUser, createUser, logout} from '../public/redux/actions/user';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 class Login extends Component {
   constructor() {
@@ -33,8 +35,29 @@ class Login extends Component {
       registerOverlay: false,
       username: null,
       password: null,
+      email: null,
+      role: 'engineer',
     };
   }
+
+  handleRegister = _ => {
+    const api = API_URL + '/api/v1/user/register';
+    const data = {
+      email: this.state.email,
+      username: this.state.username,
+      password: this.state.password,
+      role: this.state.role,
+    };
+    this.props
+      .createUser(api, data)
+      .then(() => {
+        this.setState({registerOverlay: false});
+      })
+      .catch(err => {
+        console.log(err.response.data.message);
+        this.setState({errMessage: err.response.data.message});
+      });
+  };
 
   handleLogin = _ => {
     const api = API_URL + '/api/v1/user/login';
@@ -111,7 +134,69 @@ class Login extends Component {
           isVisible={this.state.registerOverlay}
           height="auto"
           onBackdropPress={() => this.setState({registerOverlay: false})}>
-          <Text>Register</Text>
+          <>
+            <Header>
+              <Body>
+                <Title>Register</Title>
+              </Body>
+              <Right>
+                <Button
+                  transparent
+                  onPress={() => this.setState({registerOverlay: false})}>
+                  <Text>Cancel</Text>
+                </Button>
+              </Right>
+            </Header>
+            <Form>
+              <Item floatingLabel>
+                <Label>Email</Label>
+                <Input onChangeText={e => this.setState({email: e})} />
+              </Item>
+              <Item floatingLabel>
+                <Label>Username</Label>
+                <Input onChangeText={e => this.setState({username: e})} />
+              </Item>
+              <Item floatingLabel last>
+                <Label>Password</Label>
+                <Input
+                  secureTextEntry
+                  onChangeText={e => this.setState({password: e})}
+                />
+              </Item>
+              <CheckBox
+                checkedIcon={
+                  <>
+                    <Text>Register as Engineer </Text>
+                    <FontAwesome5Icon size={20} name={'laptop-code'} />
+                  </>
+                }
+                uncheckedIcon={
+                  <>
+                    <Text>Register as Company </Text>
+                    <FontAwesome5Icon size={20} name={'building'} />
+                  </>
+                }
+                checked={this.state.role === 'engineer' ? true : false}
+                onPress={() =>
+                  this.setState(
+                    this.state.role === 'engineer'
+                      ? {role: 'company'}
+                      : {role: 'engineer'},
+                  )
+                }
+              />
+              <Header transparent>
+                <Right>
+                  <Button
+                    onPress={this.handleRegister}
+                    rounded
+                    style={{marginTop: 20, marginBottom: 30}}>
+                    <Text>Register Now</Text>
+                  </Button>
+                </Right>
+              </Header>
+            </Form>
+          </>
         </Overlay>
         <Container>
           <Content style={{padding: 30, paddingTop: 350}}>
@@ -179,6 +264,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetch: (api, data) => dispatch(fetchUser(api, data)),
+  createUser: (api, data) => dispatch(createUser(api, data)),
   logoutUser: _ => dispatch(logout()),
 });
 

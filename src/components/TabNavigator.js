@@ -1,14 +1,14 @@
 import React from 'react';
 import {View} from 'react-native';
-import {createAppContainer} from 'react-navigation';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // Import Screen
-import MyProfile from './src/screens/MyProfile';
-import Engineers from './src/screens/Engineers';
-import Companies from './src/screens/Companies';
+import MyProfile from '../../src/screens/MyProfile';
+import Engineers from '../../src/screens/Engineers';
+import Companies from '../../src/screens/Companies';
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
@@ -36,9 +36,9 @@ const TabNavigator = createMaterialBottomTabNavigator(
             />
           </View>
         ),
-        activeColor: '#f60c0d',
-        inactiveColor: '#f65a22',
-        barStyle: {backgroundColor: '#f69b31'},
+        activeColor: '#4267B2',
+        inactiveColor: '#1A2947',
+        barStyle: {backgroundColor: '#FFF'},
       },
     },
     Companies: {
@@ -54,18 +54,33 @@ const TabNavigator = createMaterialBottomTabNavigator(
             />
           </View>
         ),
-        activeColor: '#615af6',
-        inactiveColor: '#46f6d7',
-        barStyle: {backgroundColor: '#67baf6'},
+        activeColor: '#4267B2',
+        inactiveColor: '#1A2947',
+        barStyle: {backgroundColor: '#f0edf6'},
+      },
+    },
+    About: {
+      screen: MyProfile,
+      navigationOptions: {
+        tabBarLabel: 'Account',
+        tabBarIcon: ({tintColor}) => (
+          <View>
+            <MaterialCommunityIcons
+              style={[{color: tintColor}]}
+              size={22}
+              name={'view-sequential'}
+            />
+          </View>
+        ),
       },
     },
   },
   {
     initialRouteName: 'MyProfile',
     activeColor: '#f0edf6',
-    inactiveColor: '#226557',
-    barStyle: {backgroundColor: '#3BAD87'},
+    inactiveColor: '#1A2947',
+    barStyle: {backgroundColor: '#4267B2'},
   },
 );
 
-export default createAppContainer(TabNavigator);
+export default TabNavigator;

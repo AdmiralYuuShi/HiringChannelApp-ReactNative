@@ -39,9 +39,16 @@ class Engineers extends React.Component {
     this.search = lodash.debounce(this.search, 500);
   }
 
-  componentDidMount() {
-    this.fetchEngineers();
+  async componentDidMount() {
+    this.focusListener = this.props.navigation.addListener('willFocus', () => {
+      this.onFocusFunction();
+    });
   }
+
+  onFocusFunction = () => {
+    // do some stuff on every screen focus
+    this.fetchEngineers();
+  };
 
   showSearch = _ => {
     this.setState({showSearch: !this.state.showSearch});
@@ -120,7 +127,7 @@ class Engineers extends React.Component {
             <Form>
               <Picker
                 mode="dropdown"
-                iosHeader="Select your SIM"
+                iosHeader="Sort By"
                 iosIcon={<Icon name="arrow-down" />}
                 style={{width: 200}}
                 selectedValue={this.state.sortBy}

@@ -13,8 +13,11 @@ import {
   Button,
   Body,
   Title,
+  Picker,
+  CheckBox,
 } from 'native-base';
 import {fetchUser} from '../public/redux/actions/user';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export class Login extends Component {
   constructor() {
@@ -24,23 +27,23 @@ export class Login extends Component {
       registerOverlay: false,
       username: null,
       password: null,
+      email: null,
+      role: null,
     };
   }
 
-  handleLogin = _ => {
-    console.log(API_URL);
-    const api = API_URL + ':8080/api/v1/user/login';
-    console.warn(api);
-    console.warn(this.state.username);
-    console.warn(this.state.password);
+  handleRegister = _ => {
+    const api = API_URL + '/api/v1/user/register';
     const data = {
+      email: this.state.email,
       username: this.state.username,
       password: this.state.password,
+      role: this.state.role,
     };
     this.props
       .fetch(api, data)
       .then(() => {
-        this.setState({loginOverlay: false});
+        this.setState({registerOverlay: false});
         this.props.navigation.navigate('tab');
       })
       .catch(err => {
@@ -54,17 +57,21 @@ export class Login extends Component {
       <View>
         <Header>
           <Body>
-            <Title>Login</Title>
+            <Title>Register</Title>
           </Body>
           <Right>
             <Button
               transparent
-              onPress={() => this.setState({loginOverlay: false})}>
+              onPress={() => this.setState({registerOverlay: false})}>
               <Text>Cancel</Text>
             </Button>
           </Right>
         </Header>
         <Form>
+          <Item floatingLabel>
+            <Label>Email</Label>
+            <Input onChangeText={e => this.setState({email: e})} />
+          </Item>
           <Item floatingLabel>
             <Label>Username</Label>
             <Input onChangeText={e => this.setState({username: e})} />
@@ -73,13 +80,35 @@ export class Login extends Component {
             <Label>Password</Label>
             <Input onChangeText={e => this.setState({password: e})} />
           </Item>
+          <CheckBox
+            checkedIcon={
+              <>
+                <Text>Engineer </Text>
+                <FontAwesome5Icon size={20} name={'laptop-code'} />
+              </>
+            }
+            uncheckedIcon={
+              <>
+                <Text>Company </Text>
+                <FontAwesome5Icon size={20} name={'building'} />
+              </>
+            }
+            checked={this.state.role === 'engineer' ? true : false}
+            onPress={() =>
+              this.setState(
+                this.state.orderBy === 'engineer'
+                  ? {orderBy: 'company'}
+                  : {orderBy: 'engineer'},
+              )
+            }
+          />
           <Header transparent>
             <Right>
               <Button
-                onPress={this.handleLogin}
+                onPress={this.handleRegister}
                 rounded
                 style={{marginTop: 20, marginBottom: 30}}>
-                <Text>Login Now</Text>
+                <Text>Register Now</Text>
               </Button>
             </Right>
           </Header>

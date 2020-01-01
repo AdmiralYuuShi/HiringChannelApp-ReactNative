@@ -5,6 +5,11 @@ export const fetchUser = (api, data) => ({
   payload: axios.post(api, data),
 });
 
+export const createUser = (api, data) => ({
+  type: 'CREATE_USER',
+  payload: axios.post(api, data),
+});
+
 export const logout = (api, data) => ({
   type: 'LOGOUT_USER',
 });

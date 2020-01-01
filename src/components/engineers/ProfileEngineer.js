@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {API_URL} from 'react-native-dotenv';
 import {View} from 'react-native';
+import {withNavigation} from 'react-navigation';
 import {
   Avatar,
   Tile,
@@ -25,37 +26,15 @@ class ProfileEngineer extends React.Component {
   constructor() {
     super();
     this.state = {
-      engineer_id: '',
-      name: '',
-      description: '',
-      profil_picture: '',
-      skill: '',
-      date_of_birth: '',
-      location: '',
-      expected_salary: '',
-      showcase: '',
-      phone: '',
-      email: '',
       largeImage: false,
-      profileStatus: false,
     };
   }
 
-  async componentDidMount() {
-    this.getData();
-    this.focusListener = this.props.navigation.addListener('willFocus', () => {
-      this.onFocusFunction();
-    });
-  }
-
-  onFocusFunction = () => {
-    // do some stuff on every screen focus
-    this.getData();
-  };
-
   handleDelete = () => {
     this.props.deleteEngineer(
-      API_URL + '/api/v1/engineer/' + this.state.engineer_id,
+      API_URL +
+        '/api/v1/engineer/' +
+        this.props.engineers.engineers[0].engineer_id,
       this.props.auth.token,
       this.props.auth.email,
       this.props.auth.userId,
@@ -63,35 +42,8 @@ class ProfileEngineer extends React.Component {
     this.setState({profileStatus: false});
   };
 
-  getData = () => {
-    this.props
-      .fetchEngineer(
-        `${API_URL}/api/v1/engineer/byUserId/` + this.props.auth.userId,
-      )
-      .then(res => {
-        this.setState({engineer_id: res.value.data.data[0].engineer_id});
-        this.setState({name: res.value.data.data[0].name});
-        this.setState({description: res.value.data.data[0].description});
-        this.setState({profil_picture: res.value.data.data[0].profil_picture});
-        this.setState({skill: res.value.data.data[0].skill});
-        this.setState({date_of_birth: res.value.data.data[0].date_of_birth});
-        this.setState({location: res.value.data.data[0].location});
-        this.setState({
-          expected_salary: res.value.data.data[0].expected_salary,
-        });
-        this.setState({showcase: res.value.data.data[0].showcase});
-        this.setState({phone: res.value.data.data[0].phone});
-        this.setState({email: res.value.data.data[0].email});
-        this.setState({email: res.value.data.data[0].email});
-        this.setState({profileStatus: true});
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({profileStatus: false});
-      });
-  };
-
   render() {
+    const engineer = this.props.engineers.engineers[0];
     return (
       <>
         {this.getData}
@@ -103,7 +55,7 @@ class ProfileEngineer extends React.Component {
           <>
             <Image
               source={{
-                uri: API_URL + '/images/' + this.state.profil_picture,
+                uri: API_URL + '/images/' + engineer.profil_picture,
               }}
               style={{width: 250, height: 250}}
             />
@@ -136,18 +88,18 @@ class ProfileEngineer extends React.Component {
                   onEditPress={() => console.warn('Edit!')}
                   activeOpacity={0.7}
                   source={{
-                    uri: API_URL + '/images/' + this.state.profil_picture,
+                    uri: API_URL + '/images/' + engineer.profil_picture,
                   }}
                   showEditButton
                 />
-                <Text h4>{this.state.name}</Text>
+                <Text h4>{engineer.name}</Text>
                 <Text
                   style={{
                     textAlign: 'center',
                     marginTop: 5,
                     paddingHorizontal: 10,
                   }}>
-                  {this.state.description}
+                  {engineer.description}
                 </Text>
                 <Divider
                   style={{
@@ -172,7 +124,7 @@ class ProfileEngineer extends React.Component {
                       <Text>
                         My skill is{' '}
                         <Text style={{fontWeight: 'bold'}}>
-                          {this.state.skill}
+                          {engineer.skill}
                         </Text>
                       </Text>
                     </Body>
@@ -191,7 +143,7 @@ class ProfileEngineer extends React.Component {
                       <Text>
                         Expected Salary{' '}
                         <Text style={{fontWeight: 'bold'}}>
-                          ${this.state.expected_salary}
+                          ${engineer.expected_salary}
                         </Text>
                       </Text>
                     </Body>
@@ -210,7 +162,7 @@ class ProfileEngineer extends React.Component {
                       <Text>
                         Lives in{' '}
                         <Text style={{fontWeight: 'bold'}}>
-                          {this.state.location}
+                          {engineer.location}
                         </Text>
                       </Text>
                     </Body>
@@ -230,7 +182,7 @@ class ProfileEngineer extends React.Component {
                         Born in{' '}
                         <Text style={{fontWeight: 'bold'}}>
                           <Moment format="D MMMM YYYY" element={Text}>
-                            {this.state.date_of_birth}
+                            {engineer.date_of_birth}
                           </Moment>
                         </Text>
                       </Text>
@@ -249,7 +201,7 @@ class ProfileEngineer extends React.Component {
                     <Body>
                       <Text>
                         <Text style={{fontWeight: 'bold'}}>
-                          {this.state.showcase}
+                          {engineer.showcase}
                         </Text>
                       </Text>
                     </Body>
@@ -267,7 +219,7 @@ class ProfileEngineer extends React.Component {
                     <Body>
                       <Text>
                         <Text style={{fontWeight: 'bold'}}>
-                          {this.state.phone}
+                          {engineer.phone}
                         </Text>
                       </Text>
                     </Body>
@@ -285,7 +237,7 @@ class ProfileEngineer extends React.Component {
                     <Body>
                       <Text>
                         <Text style={{fontWeight: 'bold'}}>
-                          {this.state.email}
+                          {engineer.email}
                         </Text>
                       </Text>
                     </Body>
@@ -308,19 +260,19 @@ class ProfileEngineer extends React.Component {
                   <Avatar
                     onPress={() => {
                       this.props.navigation.navigate('editEngineer', {
-                        engineer_id: this.state.engineer_id,
-                        name: this.state.name,
-                        profil_picture: this.state.profil_picture,
-                        description: this.state.description,
-                        email: this.state.email,
-                        phone: this.state.phone,
-                        expected_salary: this.state.expected_salary,
-                        skill: this.state.skill,
-                        location: this.state.location,
-                        date_of_birth: moment(this.state.date_of_birth).format(
+                        engineer_id: engineer.engineer_id,
+                        name: engineer.name,
+                        profil_picture: engineer.profil_picture,
+                        description: engineer.description,
+                        email: engineer.email,
+                        phone: engineer.phone,
+                        expected_salary: engineer.expected_salary,
+                        skill: engineer.skill,
+                        location: engineer.location,
+                        date_of_birth: moment(engineer.date_of_birth).format(
                           'YYYY-MM-DD',
                         ),
-                        showcase: this.state.showcase,
+                        showcase: engineer.showcase,
                       });
                     }}
                     size="medium"
@@ -374,4 +326,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProfileEngineer);
+)(withNavigation(ProfileEngineer));
