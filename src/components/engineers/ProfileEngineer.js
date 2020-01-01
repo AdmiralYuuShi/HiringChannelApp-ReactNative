@@ -17,9 +17,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ScrollView} from 'react-native-gesture-handler';
 import {logout} from '../../public/redux/actions/user';
 import {connect} from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
 import {
   fetchEngineers,
   deleteEngineer,
+  uploadPhoto,
 } from '../../public/redux/actions/engineers';
 
 class ProfileEngineer extends React.Component {
@@ -27,8 +29,45 @@ class ProfileEngineer extends React.Component {
     super();
     this.state = {
       largeImage: false,
+      photo: null,
+      changePhoto: false,
     };
   }
+
+  handleChoosePhoto = () => {
+    const options = {
+      noData: true,
+    };
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.uri) {
+        this.setState({photo: response});
+      }
+    });
+  };
+
+  handleSavePhoto = () => {
+    let formData = new FormData();
+    formData.append('file', {
+      name: this.state.photo.fileName,
+      type: this.state.photo.type,
+      uri: this.state.photo.uri,
+    });
+    const config = {
+      headers: {
+        'Content-type': 'multipart/form-data',
+        Authorization: `Bearer ${this.props.auth.token}`,
+        email: this.props.auth.email,
+        userid: this.props.auth.userId,
+      },
+    };
+    const api =
+      API_URL +
+      '/api/v1/engineer/changeProfilPicture/' +
+      this.props.engineers.engineers[0].engineer_id;
+    this.props.uploadPhoto(api, formData, config).then(_ => {
+      this.setState({changePhoto: false});
+    });
+  };
 
   handleDelete = () => {
     this.props.deleteEngineer(
@@ -47,6 +86,35 @@ class ProfileEngineer extends React.Component {
     return (
       <>
         {this.getData}
+        <Overlay
+          isVisible={this.state.changePhoto}
+          height="auto"
+          width="auto"
+          onBackdropPress={() => this.setState({changePhoto: false})}>
+          <>
+            {this.state.photo ? (
+              <Image
+                source={{uri: this.state.photo.uri}}
+                style={{width: 250, height: 250}}
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: API_URL + '/images/' + engineer.profil_picture,
+                }}
+                style={{width: 250, height: 250}}
+              />
+            )}
+            <Button onPress={this.handleChoosePhoto}>
+              <Text>Select Photo</Text>
+            </Button>
+            {this.state.photo && (
+              <Button onPress={this.handleSavePhoto}>
+                <Text>Save</Text>
+              </Button>
+            )}
+          </>
+        </Overlay>
         <Overlay
           isVisible={this.state.largeImage}
           height="auto"
@@ -85,7 +153,7 @@ class ProfileEngineer extends React.Component {
                   rounded
                   size="xlarge"
                   onPress={() => this.setState({largeImage: true})}
-                  onEditPress={() => console.warn('Edit!')}
+                  onEditPress={() => this.setState({changePhoto: true})}
                   activeOpacity={0.7}
                   source={{
                     uri: API_URL + '/images/' + engineer.profil_picture,
@@ -318,6 +386,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchEngineer: api => dispatch(fetchEngineers(api)),
+  uploadPhoto: (api, formData, config) =>
+    dispatch(uploadPhoto(api, formData, config)),
   logoutUser: _ => dispatch(logout()),
   deleteEngineer: (api, token, email, userid) =>
     dispatch(deleteEngineer(api, token, email, userid)),

@@ -12,6 +12,11 @@ export const updateEngineer = (api, data, token, email, userid) => ({
   }),
 });
 
+export const uploadPhoto = (api, formData, config) => ({
+  type: 'UPDATE_ENGINEERS',
+  payload: axios.put(api, formData, config),
+});
+
 export const deleteEngineer = (api, token, email, userid) => ({
   type: 'DELETE_ENGINEERS',
   payload: axios.delete(api, {

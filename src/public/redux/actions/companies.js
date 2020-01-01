@@ -12,6 +12,11 @@ export const updateCompany = (api, data, token, email, userid) => ({
   }),
 });
 
+export const uploadPhoto = (api, formData, config) => ({
+  type: 'UPDATE_COMPANY',
+  payload: axios.put(api, formData, config),
+});
+
 export const createCompany = (api, data, token, email, userid) => ({
   type: 'CREATE_COMPANY',
   payload: axios.post(api, data, {

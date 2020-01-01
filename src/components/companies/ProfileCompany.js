@@ -16,15 +16,53 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ScrollView} from 'react-native-gesture-handler';
 import {logout} from '../../public/redux/actions/user';
 import {connect} from 'react-redux';
-import {deleteCompany} from '../../public/redux/actions/companies';
+import ImagePicker from 'react-native-image-picker';
+import {deleteCompany, uploadPhoto} from '../../public/redux/actions/companies';
 
 class ProfileCompany extends React.Component {
   constructor() {
     super();
     this.state = {
       largeImage: false,
+      photo: null,
+      changePhoto: false,
     };
   }
+
+  handleChoosePhoto = () => {
+    const options = {
+      noData: true,
+    };
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.uri) {
+        this.setState({photo: response});
+      }
+    });
+  };
+
+  handleSavePhoto = () => {
+    let formData = new FormData();
+    formData.append('file', {
+      name: this.state.photo.fileName,
+      type: this.state.photo.type,
+      uri: this.state.photo.uri,
+    });
+    const config = {
+      headers: {
+        'Content-type': 'multipart/form-data',
+        Authorization: `Bearer ${this.props.auth.token}`,
+        email: this.props.auth.email,
+        userid: this.props.auth.userId,
+      },
+    };
+    const api =
+      API_URL +
+      '/api/v1/company/changeLogo/' +
+      this.props.companies.companies[0].company_id;
+    this.props.uploadPhoto(api, formData, config).then(_ => {
+      this.setState({changePhoto: false});
+    });
+  };
 
   handleDelete = () => {
     this.props.deleteCompany(
@@ -43,6 +81,35 @@ class ProfileCompany extends React.Component {
     return (
       <>
         {this.getData}
+        <Overlay
+          isVisible={this.state.changePhoto}
+          height="auto"
+          width="auto"
+          onBackdropPress={() => this.setState({changePhoto: false})}>
+          <>
+            {this.state.photo ? (
+              <Image
+                source={{uri: this.state.photo.uri}}
+                style={{width: 250, height: 250}}
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: API_URL + '/images/' + company.logo,
+                }}
+                style={{width: 250, height: 250}}
+              />
+            )}
+            <Button onPress={this.handleChoosePhoto}>
+              <Text>Select Photo</Text>
+            </Button>
+            {this.state.photo && (
+              <Button onPress={this.handleSavePhoto}>
+                <Text>Save</Text>
+              </Button>
+            )}
+          </>
+        </Overlay>
         <Overlay
           isVisible={this.state.largeImage}
           height="auto"
@@ -81,7 +148,7 @@ class ProfileCompany extends React.Component {
                   rounded
                   size="xlarge"
                   onPress={() => this.setState({largeImage: true})}
-                  onEditPress={() => console.warn('Edit!')}
+                  onEditPress={() => this.setState({changePhoto: true})}
                   activeOpacity={0.7}
                   source={{
                     uri: API_URL + '/images/' + company.logo,
@@ -193,6 +260,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   logoutUser: _ => dispatch(logout()),
+  uploadPhoto: (api, formData, config) =>
+    dispatch(uploadPhoto(api, formData, config)),
   deleteCompany: (api, token, email, userid) =>
     dispatch(deleteCompany(api, token, email, userid)),
 });
