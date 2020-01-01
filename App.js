@@ -10,6 +10,7 @@ import {View} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -22,6 +23,7 @@ import MyProfile from './src/screens/MyProfile';
 import Engineers from './src/screens/Engineers';
 import Companies from './src/screens/Companies';
 import DetailEngineer from './src/screens/DetailEngineer';
+import DetailCompany from './src/screens/DetailCompany';
 import EditEngineer from './src/screens/EditEngineer';
 import CreateEngineerProfile from './src/screens/CreateEngineerProfile';
 
@@ -77,13 +79,13 @@ const TabNavigator = createMaterialBottomTabNavigator(
     About: {
       screen: MyProfile,
       navigationOptions: {
-        tabBarLabel: 'My Profile',
+        tabBarLabel: 'Account',
         tabBarIcon: ({tintColor}) => (
           <View>
-            <FontAwesome5
+            <MaterialCommunityIcons
               style={[{color: tintColor}]}
-              size={20}
-              name={'patreon'}
+              size={22}
+              name={'view-sequential'}
             />
           </View>
         ),
@@ -111,8 +113,11 @@ const StackNavigator = createStackNavigator({
       header: null,
     },
   },
-  detail: {
+  detailEngineer: {
     screen: DetailEngineer,
+  },
+  detailCompany: {
+    screen: DetailCompany,
   },
   editEngineer: {
     screen: EditEngineer,

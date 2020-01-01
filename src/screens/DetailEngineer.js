@@ -13,6 +13,7 @@ import {
 } from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ScrollView} from 'react-native-gesture-handler';
+import Moment from 'react-moment';
 
 const DetailEngineer = props => {
   const engineer_id = props.navigation.getParam('engineer_id');
@@ -47,12 +48,10 @@ const DetailEngineer = props => {
           rounded
           size="xlarge"
           onPress={() => console.warn('Works!')}
-          onEditPress={() => console.warn('Edit!')}
           activeOpacity={0.7}
           source={{
             uri: `${API_URL}/images/${profil_picture}`,
           }}
-          showEditButton
         />
         <Text h4>{name}</Text>
         <Text
@@ -124,8 +123,12 @@ const DetailEngineer = props => {
             </Left>
             <Body>
               <Text>
-                Born in
-                <Text style={{fontWeight: 'bold'}}> {date_of_birth}</Text>
+                Born in{' '}
+                <Text style={{fontWeight: 'bold'}}>
+                  <Moment format="D MMMM YYYY" element={Text}>
+                    {date_of_birth}
+                  </Moment>
+                </Text>
               </Text>
             </Body>
           </ListItem>

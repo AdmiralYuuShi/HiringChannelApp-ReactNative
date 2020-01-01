@@ -173,13 +173,8 @@ class Engineers extends React.Component {
         </Overlay>
         <Container>
           <Header noShadow style={{backgroundColor: '#4267B2'}}>
-            <Left>
-              <Button transparent>
-                <Icon name="arrow-back" />
-              </Button>
-            </Left>
             <Body>
-              <Title>Header</Title>
+              <Title>Engineers List</Title>
             </Body>
             <Right>
               <Button transparent>

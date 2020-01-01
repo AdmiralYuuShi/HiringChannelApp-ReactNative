@@ -23,7 +23,7 @@ import {
 } from 'native-base';
 import {Overlay, Divider} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {fetchUser} from '../public/redux/actions/user';
+import {fetchUser, logout} from '../public/redux/actions/user';
 
 class Login extends Component {
   constructor() {
@@ -37,7 +37,7 @@ class Login extends Component {
   }
 
   handleLogin = _ => {
-    const api = `${API_URL}/api/v1/user/login`;
+    const api = API_URL + '/api/v1/user/login';
     const data = {
       username: this.state.username,
       password: this.state.password,
@@ -52,6 +52,11 @@ class Login extends Component {
         console.log(err.response.data.message);
         this.setState({errMessage: err.response.data.message});
       });
+  };
+
+  handleGuess = _ => {
+    this.props.logoutUser();
+    this.props.navigation.navigate('tab');
   };
 
   render() {
@@ -81,7 +86,10 @@ class Login extends Component {
               </Item>
               <Item floatingLabel last>
                 <Label>Password</Label>
-                <Input secureTextEntry onChangeText={e => this.setState({password: e})} />
+                <Input
+                  secureTextEntry
+                  onChangeText={e => this.setState({password: e})}
+                />
               </Item>
               <Header transparent>
                 <Body>
@@ -147,8 +155,7 @@ class Login extends Component {
                 </CardItem>
               </TouchableOpacity>
               <Divider />
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('tab')}>
+              <TouchableOpacity onPress={this.handleGuess}>
                 <CardItem>
                   <Icon active name="logo-googleplus" />
                   <Text>Im Guess</Text>
@@ -172,6 +179,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetch: (api, data) => dispatch(fetchUser(api, data)),
+  logoutUser: _ => dispatch(logout()),
 });
 
 export default connect(

@@ -68,7 +68,7 @@ class MyProfile extends React.Component {
   getData = () => {
     this.props
       .fetchEngineer(
-        API_URL + '/api/v1/engineer/byUserId/' + this.props.auth.userId,
+        `${API_URL}/api/v1/engineer/byUserId/` + this.props.auth.userId,
       )
       .then(res => {
         this.setState({engineer_id: res.value.data.data[0].engineer_id});
@@ -103,9 +103,14 @@ class MyProfile extends React.Component {
         return (
           <View>
             <Text>You havent make a profile</Text>
-            <Button onPress={() => this.props.navigation.navigate('createEngineerProfile')}><Text>Make One</Text></Button>
+            <Button
+              onPress={() =>
+                this.props.navigation.navigate('createEngineerProfile')
+              }>
+              <Text>Make One</Text>
+            </Button>
           </View>
-        )
+        );
       } else {
         return (
           <>
@@ -242,9 +247,12 @@ class MyProfile extends React.Component {
                         </Left>
                         <Body>
                           <Text>
-                            <Moment format="D MMMM YYYY" element={Text}>
-                              {this.state.date_of_birth}
-                            </Moment>
+                            Born in{' '}
+                            <Text style={{fontWeight: 'bold'}}>
+                              <Moment format="D MMMM YYYY" element={Text}>
+                                {this.state.date_of_birth}
+                              </Moment>
+                            </Text>
                           </Text>
                         </Body>
                       </ListItem>

@@ -28,7 +28,8 @@ export class Login extends Component {
   }
 
   handleLogin = _ => {
-    const api = 'http://18.212.104.44:8080/api/v1/user/login';
+    console.log(API_URL);
+    const api = API_URL + ':8080/api/v1/user/login';
     console.warn(api);
     console.warn(this.state.username);
     console.warn(this.state.password);

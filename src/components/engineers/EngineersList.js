@@ -37,7 +37,7 @@ const EngineersList = props => {
               <TouchableOpacity
                 key={engineers.engineer_id}
                 onPress={() => {
-                  props.navigation.navigate('detail', {
+                  props.navigation.navigate('detailEngineer', {
                     engineer_id: engineers.engineer_id,
                     name: engineers.name,
                     profil_picture: engineers.profil_picture,
@@ -60,7 +60,7 @@ const EngineersList = props => {
                         }}
                       />
                       <Body>
-                        <Text>{engineers.name}</Text>
+                        <Text style={{fontWeight: 'bold'}}>{engineers.name}</Text>
                         <Text note numberOfLines={2}>
                           {engineers.description}
                         </Text>
