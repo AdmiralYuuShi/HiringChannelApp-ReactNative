@@ -11,16 +11,12 @@ import {
   Overlay,
   Image,
 } from 'react-native-elements';
-import Moment from 'react-moment';
 import {ListItem, Left, Button, Body, Content} from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ScrollView} from 'react-native-gesture-handler';
 import {logout} from '../../public/redux/actions/user';
 import {connect} from 'react-redux';
-import {
-  fetchcompanies,
-  deletecompany,
-} from '../../public/redux/actions/companies';
+import {deleteCompany} from '../../public/redux/actions/companies';
 
 class ProfileCompany extends React.Component {
   constructor() {
@@ -31,7 +27,7 @@ class ProfileCompany extends React.Component {
   }
 
   handleDelete = () => {
-    this.props.deletecompany(
+    this.props.deleteCompany(
       API_URL +
         '/api/v1/company/' +
         this.props.companies.companies[0].company_id,
@@ -39,7 +35,7 @@ class ProfileCompany extends React.Component {
       this.props.auth.email,
       this.props.auth.userId,
     );
-    this.setState({profileStatus: false});
+    this.props.profileStatus(false);
   };
 
   render() {
@@ -196,10 +192,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchcompany: api => dispatch(fetchcompanies(api)),
   logoutUser: _ => dispatch(logout()),
-  deletecompany: (api, token, email, userid) =>
-    dispatch(deletecompany(api, token, email, userid)),
+  deleteCompany: (api, token, email, userid) =>
+    dispatch(deleteCompany(api, token, email, userid)),
 });
 
 export default connect(

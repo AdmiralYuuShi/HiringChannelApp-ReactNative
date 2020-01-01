@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
 import {API_URL} from 'react-native-dotenv';
 import {connect} from 'react-redux';
 import {
@@ -14,21 +13,20 @@ import {
   Body,
   Title,
   Picker,
-  CheckBox,
 } from 'native-base';
-import {fetchUser} from '../public/redux/actions/user';
+import {CheckBox} from 'react-native-elements';
+import {createUser} from '../public/redux/actions/user';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import {withNavigation} from 'react-navigation';
 
-export class Login extends Component {
+export class Register extends Component {
   constructor() {
     super();
     this.state = {
-      loginOverlay: false,
-      registerOverlay: false,
       username: null,
       password: null,
       email: null,
-      role: null,
+      role: 'engineer',
     };
   }
 
@@ -41,28 +39,25 @@ export class Login extends Component {
       role: this.state.role,
     };
     this.props
-      .fetch(api, data)
+      .createUser(api, data)
       .then(() => {
-        this.setState({registerOverlay: false});
-        this.props.navigation.navigate('tab');
+        this.props.setOverlay(false);
       })
       .catch(err => {
         console.log(err.response.data.message);
-        this.setState({errMessage: err.response.data.message});
+        this.props.errData(err.response.data.message);
       });
   };
 
   render() {
     return (
-      <View>
+      <>
         <Header>
           <Body>
             <Title>Register</Title>
           </Body>
           <Right>
-            <Button
-              transparent
-              onPress={() => this.setState({registerOverlay: false})}>
+            <Button transparent onPress={() => this.props.setOverlay(false)}>
               <Text>Cancel</Text>
             </Button>
           </Right>
@@ -78,27 +73,30 @@ export class Login extends Component {
           </Item>
           <Item floatingLabel last>
             <Label>Password</Label>
-            <Input onChangeText={e => this.setState({password: e})} />
+            <Input
+              secureTextEntry
+              onChangeText={e => this.setState({password: e})}
+            />
           </Item>
           <CheckBox
             checkedIcon={
               <>
-                <Text>Engineer </Text>
+                <Text>Register as Engineer </Text>
                 <FontAwesome5Icon size={20} name={'laptop-code'} />
               </>
             }
             uncheckedIcon={
               <>
-                <Text>Company </Text>
+                <Text>Register as Company </Text>
                 <FontAwesome5Icon size={20} name={'building'} />
               </>
             }
             checked={this.state.role === 'engineer' ? true : false}
             onPress={() =>
               this.setState(
-                this.state.orderBy === 'engineer'
-                  ? {orderBy: 'company'}
-                  : {orderBy: 'engineer'},
+                this.state.role === 'engineer'
+                  ? {role: 'company'}
+                  : {role: 'engineer'},
               )
             }
           />
@@ -113,20 +111,16 @@ export class Login extends Component {
             </Right>
           </Header>
         </Form>
-      </View>
+      </>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  engineers: state.engineers,
-});
-
 const mapDispatchToProps = dispatch => ({
-  fetch: (api, data) => dispatch(fetchUser(api, data)),
+  createUser: (api, data) => dispatch(createUser(api, data)),
 });
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
-)(Login);
+)(withNavigation(Register));

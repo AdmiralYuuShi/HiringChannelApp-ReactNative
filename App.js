@@ -25,6 +25,7 @@ import EditEngineer from './src/screens/EditEngineer';
 import CreateEngineerProfile from './src/screens/CreateEngineerProfile';
 import EditCompany from './src/screens/EditCompany';
 import TabNavigator from './src/components/TabNavigator';
+import CreateCompanyProfile from './src/screens/CreateCompanyProfile';
 
 const StackNavigator = createStackNavigator({
   login: {
@@ -53,6 +54,9 @@ const StackNavigator = createStackNavigator({
   },
   createEngineerProfile: {
     screen: CreateEngineerProfile,
+  },
+  createCompanyProfile: {
+    screen: CreateCompanyProfile,
   },
 });
 

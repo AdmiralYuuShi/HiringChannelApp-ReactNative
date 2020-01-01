@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {API_URL} from 'react-native-dotenv';
-import {Image} from 'react-native';
 import {connect} from 'react-redux';
 import {
   Container,
@@ -10,22 +8,13 @@ import {
   Icon,
   Right,
   Text,
-  Form,
-  Item,
-  Label,
-  Input,
-  H2,
-  Header,
-  Left,
-  Button,
-  Body,
-  Title,
 } from 'native-base';
-import {CheckBox} from 'react-native-elements';
 import {Overlay, Divider} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {fetchUser, createUser, logout} from '../public/redux/actions/user';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import LoginScreen from '../components/Login';
+import RegisterScreen from '../components/Register';
 
 class Login extends Component {
   constructor() {
@@ -37,45 +26,9 @@ class Login extends Component {
       password: null,
       email: null,
       role: 'engineer',
+      errMessage: null,
     };
   }
-
-  handleRegister = _ => {
-    const api = API_URL + '/api/v1/user/register';
-    const data = {
-      email: this.state.email,
-      username: this.state.username,
-      password: this.state.password,
-      role: this.state.role,
-    };
-    this.props
-      .createUser(api, data)
-      .then(() => {
-        this.setState({registerOverlay: false});
-      })
-      .catch(err => {
-        console.log(err.response.data.message);
-        this.setState({errMessage: err.response.data.message});
-      });
-  };
-
-  handleLogin = _ => {
-    const api = API_URL + '/api/v1/user/login';
-    const data = {
-      username: this.state.username,
-      password: this.state.password,
-    };
-    this.props
-      .fetch(api, data)
-      .then(() => {
-        this.setState({loginOverlay: false});
-        this.props.navigation.navigate('tab');
-      })
-      .catch(err => {
-        console.log(err.response.data.message);
-        this.setState({errMessage: err.response.data.message});
-      });
-  };
 
   handleGuess = _ => {
     this.props.logoutUser();
@@ -89,114 +42,19 @@ class Login extends Component {
           isVisible={this.state.loginOverlay}
           height="auto"
           onBackdropPress={() => this.setState({loginOverlay: false})}>
-          <>
-            <Header>
-              <Body>
-                <Title>Login</Title>
-              </Body>
-              <Right>
-                <Button
-                  transparent
-                  onPress={() => this.setState({loginOverlay: false})}>
-                  <Text>Cancel</Text>
-                </Button>
-              </Right>
-            </Header>
-            <Form>
-              <Item floatingLabel>
-                <Label>Username</Label>
-                <Input onChangeText={e => this.setState({username: e})} />
-              </Item>
-              <Item floatingLabel last>
-                <Label>Password</Label>
-                <Input
-                  secureTextEntry
-                  onChangeText={e => this.setState({password: e})}
-                />
-              </Item>
-              <Header transparent>
-                <Body>
-                  <Title>Login</Title>
-                </Body>
-                <Right>
-                  <Button
-                    onPress={this.handleLogin}
-                    rounded
-                    style={{marginTop: 20, marginBottom: 30}}>
-                    <Text>Login Now</Text>
-                  </Button>
-                </Right>
-              </Header>
-            </Form>
-          </>
+          <LoginScreen
+            setOverlay={overlay => this.setState({loginOverlay: overlay})}
+            errData={err => this.setState({errMessage: err})}
+          />
         </Overlay>
         <Overlay
           isVisible={this.state.registerOverlay}
           height="auto"
           onBackdropPress={() => this.setState({registerOverlay: false})}>
-          <>
-            <Header>
-              <Body>
-                <Title>Register</Title>
-              </Body>
-              <Right>
-                <Button
-                  transparent
-                  onPress={() => this.setState({registerOverlay: false})}>
-                  <Text>Cancel</Text>
-                </Button>
-              </Right>
-            </Header>
-            <Form>
-              <Item floatingLabel>
-                <Label>Email</Label>
-                <Input onChangeText={e => this.setState({email: e})} />
-              </Item>
-              <Item floatingLabel>
-                <Label>Username</Label>
-                <Input onChangeText={e => this.setState({username: e})} />
-              </Item>
-              <Item floatingLabel last>
-                <Label>Password</Label>
-                <Input
-                  secureTextEntry
-                  onChangeText={e => this.setState({password: e})}
-                />
-              </Item>
-              <CheckBox
-                checkedIcon={
-                  <>
-                    <Text>Register as Engineer </Text>
-                    <FontAwesome5Icon size={20} name={'laptop-code'} />
-                  </>
-                }
-                uncheckedIcon={
-                  <>
-                    <Text>Register as Company </Text>
-                    <FontAwesome5Icon size={20} name={'building'} />
-                  </>
-                }
-                checked={this.state.role === 'engineer' ? true : false}
-                onPress={() =>
-                  this.setState(
-                    this.state.role === 'engineer'
-                      ? {role: 'company'}
-                      : {role: 'engineer'},
-                  )
-                }
-              />
-              <Header transparent>
-                <Right>
-                  <Button
-                    onPress={this.handleRegister}
-                    rounded
-                    style={{marginTop: 20, marginBottom: 30}}>
-                    <Text>Register Now</Text>
-                  </Button>
-                </Right>
-              </Header>
-            </Form>
-          </>
+          <RegisterScreen
+            setOverlay={overlay => this.setState({registerOverlay: overlay})}
+            errData={err => this.setState({errMessage: err})}
+          />
         </Overlay>
         <Container>
           <Content style={{padding: 30, paddingTop: 350}}>

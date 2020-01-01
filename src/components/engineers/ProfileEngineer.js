@@ -39,7 +39,7 @@ class ProfileEngineer extends React.Component {
       this.props.auth.email,
       this.props.auth.userId,
     );
-    this.setState({profileStatus: false});
+    this.props.profileStatus(false);
   };
 
   render() {

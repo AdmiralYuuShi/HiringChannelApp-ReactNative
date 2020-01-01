@@ -33,6 +33,10 @@ class MyProfile extends React.Component {
     this.getData();
   };
 
+  setProfilStatus = e => {
+    this.setState({profileStatus: false});
+  };
+
   handleDelete = () => {
     this.props.deleteEngineer(
       API_URL + '/api/v1/engineer/' + this.state.engineer_id,
@@ -50,7 +54,6 @@ class MyProfile extends React.Component {
           `${API_URL}/api/v1/engineer/byUserId/` + this.props.auth.userId,
         )
         .then(res => {
-          console.log('Result ========== ' + JSON.stringify(res));
           if (res.value.data.dataShowed >= 1) {
             this.setState({profileStatus: true});
           } else {
@@ -67,7 +70,11 @@ class MyProfile extends React.Component {
           `${API_URL}/api/v1/company/byUserId/` + this.props.auth.userId,
         )
         .then(res => {
-          this.setState({profileStatus: true});
+          if (res.value.data.data.length === 1) {
+            this.setState({profileStatus: true});
+          } else {
+            this.setState({profileStatus: false});
+          }
         })
         .catch(err => {
           console.log(err);
@@ -78,7 +85,6 @@ class MyProfile extends React.Component {
 
   render() {
     const user = this.props.auth;
-    console.log(this.state.profileStatus);
 
     if (user.isLogin === false) {
       return <Text>Not Loged in</Text>;
@@ -87,19 +93,28 @@ class MyProfile extends React.Component {
         return (
           <View>
             <Text>You havent make a profile</Text>
-            <Button
-              onPress={() =>
-                this.props.navigation.navigate('createEngineerProfile')
-              }>
-              <Text>Make One</Text>
-            </Button>
+            {user.role === 'engineer' ? (
+              <Button
+                onPress={() =>
+                  this.props.navigation.navigate('createEngineerProfile')
+                }>
+                <Text>Make One</Text>
+              </Button>
+            ) : (
+              <Button
+                onPress={() =>
+                  this.props.navigation.navigate('createCompanyProfile')
+                }>
+                <Text>Make One</Text>
+              </Button>
+            )}
           </View>
         );
       } else {
         if (this.props.auth.role === 'engineer') {
-          return <ProfileEngineer />;
+          return <ProfileEngineer profileStatus={this.setProfilStatus} />;
         } else {
-          return <ProfileCompany />;
+          return <ProfileCompany profileStatus={this.setProfilStatus} />;
         }
       }
     }

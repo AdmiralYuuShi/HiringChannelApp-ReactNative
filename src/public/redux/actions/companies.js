@@ -11,3 +11,17 @@ export const updateCompany = (api, data, token, email, userid) => ({
     headers: {Authorization: `Bearer ${token}`, email: email, userid: userid},
   }),
 });
+
+export const createCompany = (api, data, token, email, userid) => ({
+  type: 'CREATE_COMPANY',
+  payload: axios.post(api, data, {
+    headers: {Authorization: `Bearer ${token}`, email: email, userid: userid},
+  }),
+});
+
+export const deleteCompany = (api, token, email, userid) => ({
+  type: 'DELETE_COMPANY',
+  payload: axios.delete(api, {
+    headers: {Authorization: `Bearer ${token}`, email: email, userid: userid},
+  }),
+});

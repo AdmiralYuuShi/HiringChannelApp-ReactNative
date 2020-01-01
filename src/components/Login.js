@@ -15,24 +15,19 @@ import {
   Title,
 } from 'native-base';
 import {fetchUser} from '../public/redux/actions/user';
+import {withNavigation} from 'react-navigation';
 
 export class Login extends Component {
   constructor() {
     super();
     this.state = {
-      loginOverlay: false,
-      registerOverlay: false,
       username: null,
       password: null,
     };
   }
 
   handleLogin = _ => {
-    console.log(API_URL);
-    const api = API_URL + ':8080/api/v1/user/login';
-    console.warn(api);
-    console.warn(this.state.username);
-    console.warn(this.state.password);
+    const api = API_URL + '/api/v1/user/login';
     const data = {
       username: this.state.username,
       password: this.state.password,
@@ -40,26 +35,24 @@ export class Login extends Component {
     this.props
       .fetch(api, data)
       .then(() => {
-        this.setState({loginOverlay: false});
+        this.props.setOverlay(false);
         this.props.navigation.navigate('tab');
       })
       .catch(err => {
         console.log(err.response.data.message);
-        this.setState({errMessage: err.response.data.message});
+        this.props.errData(err.response.data.message);
       });
   };
 
   render() {
     return (
-      <View>
+      <>
         <Header>
           <Body>
             <Title>Login</Title>
           </Body>
           <Right>
-            <Button
-              transparent
-              onPress={() => this.setState({loginOverlay: false})}>
+            <Button transparent onPress={() => this.props.setOverlay(false)}>
               <Text>Cancel</Text>
             </Button>
           </Right>
@@ -71,9 +64,15 @@ export class Login extends Component {
           </Item>
           <Item floatingLabel last>
             <Label>Password</Label>
-            <Input onChangeText={e => this.setState({password: e})} />
+            <Input
+              secureTextEntry
+              onChangeText={e => this.setState({password: e})}
+            />
           </Item>
           <Header transparent>
+            <Body>
+              <Title>Login</Title>
+            </Body>
             <Right>
               <Button
                 onPress={this.handleLogin}
@@ -84,7 +83,7 @@ export class Login extends Component {
             </Right>
           </Header>
         </Form>
-      </View>
+      </>
     );
   }
 }
@@ -100,4 +99,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Login);
+)(withNavigation(Login));
