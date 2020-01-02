@@ -1,7 +1,7 @@
 import React from 'react';
 import {API_URL} from 'react-native-dotenv';
-import {View} from 'react-native';
-import {Text} from 'react-native-elements';
+import {View, Dimensions} from 'react-native';
+import {Text, Image, Tile} from 'react-native-elements';
 import {Button} from 'native-base';
 import {logout} from '../public/redux/actions/user';
 import {connect} from 'react-redux';
@@ -87,25 +87,82 @@ class MyProfile extends React.Component {
     const user = this.props.auth;
 
     if (user.isLogin === false) {
-      return <Text>Not Loged in</Text>;
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Tile
+            imageSrc={require('../public/images/searchjob.png')}
+            featured
+            editButton={{backgroundColor: 'black'}}
+            height={200}
+          />
+          <Text h4 style={{marginTop: 50}}>
+            Login To Create Your Profile
+          </Text>
+          <Button
+            onPress={() => this.props.navigation.navigate('login')}
+            style={{
+              marginTop: 10,
+              width: 100,
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <Text style={{color: 'white'}}>Login</Text>
+          </Button>
+        </View>
+      );
     } else {
       if (this.state.profileStatus === false) {
         return (
-          <View>
-            <Text>You havent make a profile</Text>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Tile
+              imageSrc={require('../public/images/searchjob.png')}
+              featured
+              editButton={{backgroundColor: 'black'}}
+              height={200}
+            />
+            <Text h3 style={{marginTop: 50}}>
+              Welcome {this.props.auth.username}
+            </Text>
+            <Text h4>
+              You have'nt create your profile
+            </Text>
             {user.role === 'engineer' ? (
               <Button
                 onPress={() =>
                   this.props.navigation.navigate('createEngineerProfile')
-                }>
-                <Text>Make One</Text>
+                }
+                style={{
+                  marginTop: 10,
+                  width: 100,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                <Text style={{color: 'white'}}>Create One</Text>
               </Button>
             ) : (
               <Button
                 onPress={() =>
                   this.props.navigation.navigate('createCompanyProfile')
-                }>
-                <Text>Make One</Text>
+                }
+                style={{
+                  marginTop: 10,
+                  width: 100,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                <Text style={{color: 'white'}}>Create One</Text>
               </Button>
             )}
           </View>

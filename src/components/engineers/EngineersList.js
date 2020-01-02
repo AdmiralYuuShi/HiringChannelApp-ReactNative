@@ -29,6 +29,16 @@ const EngineersList = props => {
         onSwipeLeft={() => props.fetch(props.engineers.detailPage.nextLink)}
         onSwipeRight={() => props.fetch(props.engineers.detailPage.prevLink)}
         config={config}>
+        <View>
+          <Text style={{alignSelf: 'center'}}>Slide rigth to Previous | Page {props.engineers.detailPage.page} of {props.engineers.detailPage.allPage} | Slide left to Next</Text>
+        </View>
+        {props.engineers.detailPage.allData < 1 ?
+        <Card>
+          <CardItem>
+            <Text>No Data</Text>
+          </CardItem>
+        </Card>
+        :
         <Content style={styles.content}>
           {props.engineers.isLoading === true ? (
             <Spinner color="blue" />
@@ -94,6 +104,7 @@ const EngineersList = props => {
             ))
           )}
         </Content>
+      }
       </GestureRecognizer>
     </View>
   );

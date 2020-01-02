@@ -54,6 +54,10 @@ class EditCompany extends Component {
       });
   };
 
+  handleSubmit = () => {
+    this.refs.form.submit();
+  };
+
   render() {
     return (
       <ScrollView>
@@ -90,7 +94,7 @@ class EditCompany extends Component {
               value={this.state.location}
               onChangeText={e => this.setState({location: e})}
             />
-            <Button title="Submit" onPress={this.handleEdit} />
+            <Button title="Submit" onPress={this.handleSubmit} />
           </Form>
         </View>
       </ScrollView>

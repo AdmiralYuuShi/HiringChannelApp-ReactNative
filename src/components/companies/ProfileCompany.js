@@ -100,11 +100,19 @@ class ProfileCompany extends React.Component {
                 style={{width: 250, height: 250}}
               />
             )}
-            <Button onPress={this.handleChoosePhoto}>
-              <Text>Select Photo</Text>
+            <Button
+              style={{marginTop: 10}}
+              block
+              light
+              onPress={this.handleChoosePhoto}>
+              <Text style={{justifyContent: 'center'}}>Select Photo</Text>
             </Button>
             {this.state.photo && (
-              <Button onPress={this.handleSavePhoto}>
+              <Button
+                block
+                success
+                style={{marginTop: 5}}
+                onPress={this.handleSavePhoto}>
                 <Text>Save</Text>
               </Button>
             )}
@@ -131,12 +139,10 @@ class ProfileCompany extends React.Component {
             <ScrollView>
               <View style={{alignItems: 'center'}}>
                 <Tile
-                  imageSrc={require('../../public/images/engineer_bg.png')}
-                  title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores dolore exercitationem"
+                  imageSrc={require('../../public/images/company_bg.png')}
                   featured
                   editButton={{backgroundColor: 'black'}}
                   height={200}
-                  caption="Some Caption Text"
                 />
                 <Avatar
                   containerStyle={{

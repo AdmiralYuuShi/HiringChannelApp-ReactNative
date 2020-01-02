@@ -217,7 +217,7 @@ class Engineers extends React.Component {
                   <Text>Search</Text>
                 </Button>
               </Header>
-              <Text>Result for {search}</Text>
+              <Text style={{marginLeft: 15}}>Result for : {search}</Text>
             </>
           ) : (
             <></>

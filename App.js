@@ -26,6 +26,7 @@ import CreateEngineerProfile from './src/screens/CreateEngineerProfile';
 import EditCompany from './src/screens/EditCompany';
 import TabNavigator from './src/components/TabNavigator';
 import CreateCompanyProfile from './src/screens/CreateCompanyProfile';
+import About from './src/screens/About';
 
 const StackNavigator = createStackNavigator({
   login: {
@@ -58,6 +59,9 @@ const StackNavigator = createStackNavigator({
   createCompanyProfile: {
     screen: CreateCompanyProfile,
   },
+  about: {
+    screen: About,
+  }
 });
 
 const Main = createAppContainer(StackNavigator);

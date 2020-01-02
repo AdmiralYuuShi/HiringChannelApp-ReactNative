@@ -79,6 +79,11 @@ class EditEngineer extends Component {
       });
   };
 
+  
+  handleSubmit = () => {
+    this.refs.form.submit();
+  };
+
   render() {
     return (
       <ScrollView>
@@ -194,7 +199,7 @@ class EditEngineer extends Component {
               value={this.state.email}
               onChangeText={e => this.setState({email: e})}
             />
-            <Button title="Submit" onPress={this.handleEdit} />
+            <Button title="Submit" onPress={this.handleSubmit} />
           </Form>
         </View>
       </ScrollView>

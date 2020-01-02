@@ -26,12 +26,10 @@ const DetailEngineer = props => {
     <ScrollView>
       <View style={{alignItems: 'center'}}>
         <Tile
-          imageSrc={require('../public/images/engineer_bg.png')}
-          title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores dolore exercitationem"
+          imageSrc={require('../public/images/company_bg.png')}
           featured
           editButton={{backgroundColor: 'black'}}
           height={200}
-          caption="Some Caption Text"
         />
         <Avatar
           containerStyle={{

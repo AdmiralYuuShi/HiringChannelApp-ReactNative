@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MyProfile from '../../src/screens/MyProfile';
 import Engineers from '../../src/screens/Engineers';
 import Companies from '../../src/screens/Companies';
+import About from '../../src/screens/About';
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
@@ -60,9 +61,9 @@ const TabNavigator = createMaterialBottomTabNavigator(
       },
     },
     About: {
-      screen: MyProfile,
+      screen: About,
       navigationOptions: {
-        tabBarLabel: 'Account',
+        tabBarLabel: 'About',
         tabBarIcon: ({tintColor}) => (
           <View>
             <MaterialCommunityIcons

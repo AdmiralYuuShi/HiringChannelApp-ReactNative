@@ -32,11 +32,9 @@ const DetailEngineer = props => {
       <View style={{alignItems: 'center'}}>
         <Tile
           imageSrc={require('../public/images/engineer_bg.png')}
-          title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores dolore exercitationem"
           featured
           editButton={{backgroundColor: 'black'}}
           height={200}
-          caption="Some Caption Text"
         />
         <Avatar
           containerStyle={{
