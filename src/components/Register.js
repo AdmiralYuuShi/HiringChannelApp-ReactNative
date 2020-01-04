@@ -12,12 +12,12 @@ import {
   Button,
   Body,
   Title,
-  Picker,
 } from 'native-base';
 import {CheckBox} from 'react-native-elements';
 import {createUser} from '../public/redux/actions/user';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import {withNavigation} from 'react-navigation';
+import {ToastAndroid} from 'react-native';
 
 export class Register extends Component {
   constructor() {
@@ -42,9 +42,23 @@ export class Register extends Component {
       .createUser(api, data)
       .then(() => {
         this.props.setOverlay(false);
+        ToastAndroid.showWithGravityAndOffset(
+          'Successfully Register',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          30,
+        );
       })
       .catch(err => {
         console.log(err.response.data.message);
+        ToastAndroid.showWithGravityAndOffset(
+          err.response.data.message,
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          20,
+        );
         this.props.errData(err.response.data.message);
       });
   };

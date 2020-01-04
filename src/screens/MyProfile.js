@@ -135,9 +135,7 @@ class MyProfile extends React.Component {
             <Text h3 style={{marginTop: 50}}>
               Welcome {this.props.auth.username}
             </Text>
-            <Text h4>
-              You have'nt create your profile
-            </Text>
+            <Text h4>You have'nt create your profile</Text>
             {user.role === 'engineer' ? (
               <Button
                 onPress={() =>
@@ -165,6 +163,16 @@ class MyProfile extends React.Component {
                 <Text style={{color: 'white'}}>Create One</Text>
               </Button>
             )}
+            <Button
+              onPress={() => this.props.logoutUser()}
+              style={{
+                marginTop: 10,
+                width: 100,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}>
+              <Text style={{color: 'white'}}>Logout</Text>
+            </Button>
           </View>
         );
       } else {

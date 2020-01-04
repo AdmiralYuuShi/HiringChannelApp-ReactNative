@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ToastAndroid} from 'react-native';
 import {API_URL} from 'react-native-dotenv';
 import {connect} from 'react-redux';
 import {
@@ -36,11 +36,24 @@ export class Login extends Component {
       .fetch(api, data)
       .then(() => {
         this.props.setOverlay(false);
+        ToastAndroid.showWithGravityAndOffset(
+          'Login Success',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          20,
+        );
         this.props.navigation.navigate('tab');
       })
       .catch(err => {
-        console.log(err.response.data.message);
-        this.props.errData(err.response.data.message);
+        ToastAndroid.showWithGravityAndOffset(
+          err.response.data.message,
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          25,
+          20,
+        );
+        throw err;
       });
   };
 

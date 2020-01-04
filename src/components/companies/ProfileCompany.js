@@ -1,7 +1,6 @@
 import React from 'react';
-import moment from 'moment';
 import {API_URL} from 'react-native-dotenv';
-import {View} from 'react-native';
+import {View, Alert, ToastAndroid} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import {
   Avatar,
@@ -35,7 +34,27 @@ class ProfileCompany extends React.Component {
     };
     ImagePicker.launchImageLibrary(options, response => {
       if (response.uri) {
-        this.setState({photo: response});
+        console.log(response);
+        response.type === 'image/jpg' ||
+        response.type === 'image/jpeg' ||
+        response.type === 'image/png'
+          ? response.fileSize <= 6000000
+            ? this.setState({photo: response})
+            : ToastAndroid.showWithGravityAndOffset(
+                'Maximum File size is 6 MB',
+                ToastAndroid.LONG,
+                ToastAndroid.TOP,
+                25,
+                20,
+              )
+          : ToastAndroid.showWithGravityAndOffset(
+              'Profile Picture must be JPG or PNG',
+              ToastAndroid.LONG,
+              ToastAndroid.TOP,
+              25,
+              20,
+            );
+        this.props.navigation.navigate('tab');
       }
     });
   };
@@ -234,7 +253,24 @@ class ProfileCompany extends React.Component {
                 </View>
                 <View style={{alignItems: 'center'}}>
                   <Avatar
-                    onPress={this.handleDelete}
+                    onPress={() =>
+                      Alert.alert(
+                        'Delete Profile',
+                        'Are you sure?',
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'Yes',
+                            onPress: this.handleDelete,
+                          },
+                        ],
+                        {cancelable: false},
+                      )
+                    }
                     size="medium"
                     rounded
                     icon={{name: 'trash', type: 'font-awesome'}}

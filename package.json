@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android-build-release": "cd ./android && rm -rf app/src/main/res/drawable* && ./gradlew app:assembleRelease"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",

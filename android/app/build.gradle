@@ -144,7 +144,13 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('your_key_name.keystore')
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release {
+            storeFile file('hiring_channel.keystore')
             storePassword 'hsmyuushi1201'
             keyAlias 'hiring_channel'
             keyPassword 'hsmyuushi1201'

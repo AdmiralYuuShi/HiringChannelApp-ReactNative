@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {
-  Container,
-  Content,
-  Card,
-  CardItem,
-  Icon,
-  Right,
-  Text,
-} from 'native-base';
+import {Container, Content, Card, CardItem, Text} from 'native-base';
 import {Overlay, Divider, Image} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {fetchUser, createUser, logout} from '../public/redux/actions/user';
@@ -27,7 +19,6 @@ class Login extends Component {
       password: null,
       email: null,
       role: 'engineer',
-      errMessage: null,
     };
   }
 
@@ -45,7 +36,6 @@ class Login extends Component {
           onBackdropPress={() => this.setState({loginOverlay: false})}>
           <LoginScreen
             setOverlay={overlay => this.setState({loginOverlay: overlay})}
-            errData={err => this.setState({errMessage: err})}
           />
         </Overlay>
         <Overlay
@@ -54,7 +44,6 @@ class Login extends Component {
           onBackdropPress={() => this.setState({registerOverlay: false})}>
           <RegisterScreen
             setOverlay={overlay => this.setState({registerOverlay: overlay})}
-            errData={err => this.setState({errMessage: err})}
           />
         </Overlay>
         <Container style={{position: 'relative'}}>
