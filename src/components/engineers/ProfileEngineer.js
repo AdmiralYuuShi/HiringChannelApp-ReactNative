@@ -38,7 +38,8 @@ class ProfileEngineer extends React.Component {
     const options = {
       noData: true,
     };
-    ImagePicker.launchImageLibrary(options, response => {
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
       if (response.uri) {
         console.log(response);
         response.type === 'image/jpg' ||

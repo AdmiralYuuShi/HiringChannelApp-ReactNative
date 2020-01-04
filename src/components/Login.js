@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {
   Right,
   Text,
-  Form,
   Item,
   Label,
   Input,
@@ -14,6 +13,7 @@ import {
   Body,
   Title,
 } from 'native-base';
+import {Form, TextValidator} from 'react-native-validator-form';
 import {fetchUser} from '../public/redux/actions/user';
 import {withNavigation} from 'react-navigation';
 
@@ -26,12 +26,17 @@ export class Login extends Component {
     };
   }
 
+  handleSubmit = () => {
+    this.refs.form.submit();
+  };
+
   handleLogin = _ => {
     const api = API_URL + '/api/v1/user/login';
     const data = {
       username: this.state.username,
       password: this.state.password,
     };
+    console.log(data);
     this.props
       .fetch(api, data)
       .then(() => {
@@ -70,25 +75,35 @@ export class Login extends Component {
             </Button>
           </Right>
         </Header>
-        <Form>
-          <Item floatingLabel>
-            <Label>Username</Label>
-            <Input onChangeText={e => this.setState({username: e})} />
-          </Item>
-          <Item floatingLabel last>
-            <Label>Password</Label>
-            <Input
-              secureTextEntry
-              onChangeText={e => this.setState({password: e})}
-            />
-          </Item>
+        <Form ref="form" onSubmit={this.handleLogin}>
+          <TextValidator
+            name="username"
+            label="username"
+            validators={['required']}
+            errorMessages={['Username is required']}
+            placeholder="Username"
+            type="text"
+            value={this.state.username}
+            onChangeText={e => this.setState({username: e})}
+          />
+          <TextValidator
+            name="password"
+            label="text"
+            secureTextEntry
+            placeholder="Password"
+            validators={['required']}
+            errorMessages={['Password is required']}
+            type="text"
+            value={this.state.password}
+            onChangeText={e => this.setState({password: e})}
+          />
           <Header transparent>
             <Body>
               <Title>Login</Title>
             </Body>
             <Right>
               <Button
-                onPress={this.handleLogin}
+                onPress={this.handleSubmit}
                 rounded
                 style={{marginTop: 20, marginBottom: 30}}>
                 <Text>Login Now</Text>

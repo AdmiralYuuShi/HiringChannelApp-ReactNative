@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {
   Right,
   Text,
-  Form,
   Item,
   Label,
   Input,
@@ -13,6 +12,7 @@ import {
   Body,
   Title,
 } from 'native-base';
+import {Form, TextValidator} from 'react-native-validator-form';
 import {CheckBox} from 'react-native-elements';
 import {createUser} from '../public/redux/actions/user';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
@@ -29,6 +29,10 @@ export class Register extends Component {
       role: 'engineer',
     };
   }
+
+  handleSubmit = () => {
+    this.refs.form.submit();
+  };
 
   handleRegister = _ => {
     const api = API_URL + '/api/v1/user/register';
@@ -76,22 +80,39 @@ export class Register extends Component {
             </Button>
           </Right>
         </Header>
-        <Form>
-          <Item floatingLabel>
-            <Label>Email</Label>
-            <Input onChangeText={e => this.setState({email: e})} />
-          </Item>
-          <Item floatingLabel>
-            <Label>Username</Label>
-            <Input onChangeText={e => this.setState({username: e})} />
-          </Item>
-          <Item floatingLabel last>
-            <Label>Password</Label>
-            <Input
-              secureTextEntry
-              onChangeText={e => this.setState({password: e})}
-            />
-          </Item>
+        <Form ref="form" onSubmit={this.handleRegister}>
+          <TextValidator
+            name="email"
+            label="email"
+            validators={['required', 'isEmail']}
+            errorMessages={['This field is required', 'Email invalid']}
+            placeholder="Your email"
+            type="text"
+            keyboardType="email-address"
+            value={this.state.email}
+            onChangeText={e => this.setState({email: e})}
+          />
+          <TextValidator
+            name="username"
+            label="username"
+            validators={['required']}
+            errorMessages={['Username is required']}
+            placeholder="Username"
+            type="text"
+            value={this.state.username}
+            onChangeText={e => this.setState({username: e})}
+          />
+          <TextValidator
+            name="password"
+            label="text"
+            secureTextEntry
+            placeholder="Password"
+            validators={['required']}
+            errorMessages={['Password is required']}
+            type="text"
+            value={this.state.password}
+            onChangeText={e => this.setState({password: e})}
+          />
           <CheckBox
             checkedIcon={
               <>
@@ -117,7 +138,7 @@ export class Register extends Component {
           <Header transparent>
             <Right>
               <Button
-                onPress={this.handleRegister}
+                onPress={this.handleSubmit}
                 rounded
                 style={{marginTop: 20, marginBottom: 30}}>
                 <Text>Register Now</Text>
