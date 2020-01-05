@@ -10,6 +10,7 @@ import {
   Body,
   Content,
   Spinner,
+  Button,
 } from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {connect} from 'react-redux';
@@ -30,81 +31,117 @@ const EngineersList = props => {
         onSwipeRight={() => props.fetch(props.engineers.detailPage.prevLink)}
         config={config}>
         <View>
-          <Text style={{alignSelf: 'center'}}>Slide rigth to Previous | Page {props.engineers.detailPage.page} of {props.engineers.detailPage.allPage} | Slide left to Next</Text>
+          <Text style={{alignSelf: 'center'}}>
+            Slide rigth to Previous | Page {props.engineers.detailPage.page} of{' '}
+            {props.engineers.detailPage.allPage} | Slide left to Next
+          </Text>
         </View>
-        {props.engineers.detailPage.allData < 1 ?
-        <Card>
-          <CardItem>
-            <Text>No Data</Text>
-          </CardItem>
-        </Card>
-        :
-        <Content style={styles.content}>
-          {props.engineers.isLoading === true ? (
-            <Spinner color="blue" />
-          ) : (
-            props.engineers.engineers.map(engineers => (
-              <TouchableOpacity
-                key={engineers.engineer_id}
-                onPress={() => {
-                  props.navigation.navigate('detailEngineer', {
-                    engineer_id: engineers.engineer_id,
-                    name: engineers.name,
-                    profil_picture: engineers.profil_picture,
-                    description: engineers.description,
-                    email: engineers.email,
-                    phone: engineers.phone,
-                    expected_salary: engineers.expected_salary,
-                    skill: engineers.skill,
-                    location: engineers.location,
-                    date_of_birth: engineers.date_of_birth,
-                    showcase: engineers.showcase,
-                  });
-                }}>
-                <Card>
-                  <CardItem>
-                    <Left>
-                      <Thumbnail
-                        source={{
-                          uri: API_URL + '/images/' + engineers.profil_picture,
-                        }}
-                      />
-                      <Body>
-                        <Text style={{fontWeight: 'bold'}}>{engineers.name}</Text>
-                        <Text note numberOfLines={2}>
-                          {engineers.description}
-                        </Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                  <CardItem>
-                    <View style={styles.container}>
-                      <View style={styles.salary}>
-                        <FontAwesome5
-                          size={15}
-                          name="search-dollar"
-                          style={styles.marleft}
+        {props.engineers.detailPage.allData < 1 ? (
+          <Card>
+            <CardItem>
+              <Text>No Data</Text>
+            </CardItem>
+          </Card>
+        ) : (
+          <Content style={styles.content}>
+            {props.engineers.isLoading === true ? (
+              <Spinner color="blue" />
+            ) : (
+              props.engineers.engineers.map(engineers => (
+                <TouchableOpacity
+                  key={engineers.engineer_id}
+                  onPress={() => {
+                    props.navigation.navigate('detailEngineer', {
+                      engineer_id: engineers.engineer_id,
+                      name: engineers.name,
+                      profil_picture: engineers.profil_picture,
+                      description: engineers.description,
+                      email: engineers.email,
+                      phone: engineers.phone,
+                      expected_salary: engineers.expected_salary,
+                      skill: engineers.skill,
+                      location: engineers.location,
+                      date_of_birth: engineers.date_of_birth,
+                      showcase: engineers.showcase,
+                    });
+                  }}>
+                  <Card>
+                    <CardItem>
+                      <Left>
+                        <Thumbnail
+                          source={{
+                            uri:
+                              API_URL + '/images/' + engineers.profil_picture,
+                          }}
                         />
-                        <Text>${engineers.expected_salary}</Text>
+                        <Body>
+                          <Text style={{fontWeight: 'bold'}}>
+                            {engineers.name}
+                          </Text>
+                          <Text note numberOfLines={2}>
+                            {engineers.description}
+                          </Text>
+                        </Body>
+                      </Left>
+                    </CardItem>
+                    <CardItem>
+                      <View style={styles.container}>
+                        <View style={styles.salary}>
+                          <FontAwesome5
+                            size={15}
+                            name="search-dollar"
+                            style={styles.marleft}
+                          />
+                          <Text>${engineers.expected_salary}</Text>
+                        </View>
+                        <View style={styles.skill}>
+                          <FontAwesome5
+                            name="code"
+                            size={15}
+                            style={styles.marleft}
+                          />
+                          <Text note numberOfLines={1}>
+                            {engineers.skill}
+                          </Text>
+                        </View>
                       </View>
-                      <View style={styles.skill}>
-                        <FontAwesome5
-                          name="code"
-                          size={15}
-                          style={styles.marleft}
-                        />
-                        <Text note numberOfLines={1}>
-                          {engineers.skill}
-                        </Text>
-                      </View>
-                    </View>
-                  </CardItem>
-                </Card>
-              </TouchableOpacity>
-            ))
-          )}
-        </Content>
-      }
+                    </CardItem>
+                  </Card>
+                </TouchableOpacity>
+              ))
+            )}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginVertical: 20,
+              }}>
+              {props.engineers.detailPage.page !== '1' ? (
+                <Button
+                  style={{paddingHorizontal: 50, marginHorizontal: 10}}
+                  onPress={() =>
+                    props.fetch(props.engineers.detailPage.prevLink)
+                  }>
+                  <Text style={{color: 'white'}}>{'<<< Prev'}</Text>
+                </Button>
+              ) : (
+                <></>
+              )}
+              {parseInt(props.engineers.detailPage.page) !==
+              parseInt(props.engineers.detailPage.allPage) ? (
+                <Button
+                  style={{paddingHorizontal: 50, marginHorizontal: 10}}
+                  onPress={() =>
+                    props.fetch(props.engineers.detailPage.nextLink)
+                  }>
+                  <Text style={{color: 'white'}}>{'Next >>>'}</Text>
+                </Button>
+              ) : (
+                <></>
+              )}
+            </View>
+          </Content>
+        )}
       </GestureRecognizer>
     </View>
   );

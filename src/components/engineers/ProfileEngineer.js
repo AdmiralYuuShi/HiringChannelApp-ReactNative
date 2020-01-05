@@ -348,6 +348,7 @@ class ProfileEngineer extends React.Component {
               </View>
               <View
                 style={{
+                  marginBottom: 10,
                   flexDirection: 'row',
                   justifyContent: 'space-evenly',
                 }}>
