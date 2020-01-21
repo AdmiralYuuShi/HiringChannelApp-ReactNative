@@ -65,7 +65,7 @@
     <tr>
       <td align="center">
         <a href="https://github.com/AdmiralYuuShi">
-          <sub><b>Hapid Moch Jamil</b></sub>
+          <sub><b>Hapid Moch Jamil (Admiral YuuShi)</b></sub>
         </a>
       </td>
     </tr>
