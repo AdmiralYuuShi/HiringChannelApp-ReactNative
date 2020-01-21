@@ -48,6 +48,7 @@
     <img width="200" src="./screenshots/rnhca-filter.jpeg">
     <img width="200" src="./screenshots/rnhca-companies.jpeg">
     <img width="200" src="./screenshots/rnhca-company-profile.jpeg">
+    <img width="200" src="./screenshots/rnhca-about.jpeg">
 </div>
 
 ## Release APK
