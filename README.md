@@ -27,7 +27,7 @@
 * And others
 
 ## Requirements
-* [`npm`](https://www.npmjs.com/get-npm)
+* [`nodejs`](https://nodejs.org/en/download/)
 * [`react-native`](https://facebook.github.io/react-native/docs/getting-started)
 * [`react-native-cli`](https://facebook.github.io/react-native/docs/getting-started)
 * [`HiringChannelApp-ReactNative`](https://github.com/AdmiralYuuShi/HiringChannelApp-ReactNative.git)
