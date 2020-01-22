@@ -1,4 +1,7 @@
 <h1 align="center">Hiring Channel App</h1>
+  <p align="center">
+    <image align="center" width="200" src='./screenshots/Component 1.png' />
+  </p>
 <p align="center">
   Built with React Native.
 </p>
